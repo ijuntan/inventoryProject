@@ -15,6 +15,37 @@ const HiddenData = (props) => {
   const [open, setOpen] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
   const {row} = props;
+  
+  const [firstName, setFirstName] = useState(row.firstName);
+  const [lastName, setLastName] = useState(row.lastName);
+  
+  const deleteUser = () => {
+    Axios({
+      method: "DELETE",
+      url: "http://localhost:8080/user/delete",
+      data:row,
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+    setOpenDialog(false);
+  }
+
+  const updateUser = () => {
+    Axios({
+      method: "PUT",
+      url: "http://localhost:8080/user/update",
+      data:{
+        name:row.name,
+        firstName:firstName,
+        lastName:lastName
+      },
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+    setOpen(false);
+  }
 
   const handleCloseDialog = () => {
     setOpenDialog(false);
@@ -48,10 +79,10 @@ const HiddenData = (props) => {
               <TextField id="standard-basic" label="Name" value={row.name}/>
               </Grid>
               <Grid item xs={4} container justify='center'>
-              <TextField id="standard-basic" label="First Name" value={row.firstName}/>
+              <TextField id="standard-basic" label="First Name" value={firstName} onChange={(e)=>setFirstName(e.target.value)}/>
               </Grid>
               <Grid item xs={4} container justify='center'>
-              <TextField id="standard-basic" label="Last Name" value={row.lastName}/>
+              <TextField id="standard-basic" label="Last Name" value={lastName} onChange={(e)=>setLastName(e.target.value)}/>
               </Grid>
               <Grid item xs={4} container justify='center'>
               <TextField id="standard-basic" label="Email" value={row.email}/>
@@ -60,7 +91,7 @@ const HiddenData = (props) => {
               <TextField id="standard-basic" label="Organization" value={row.organization.name}/>
               </Grid>
               <Grid item xs={4} container justify='flex-end' style={{padding:'5vh'}}>
-                <Button variant='contained' color='primary' style={{marginRight:'2vw'}}>
+                <Button variant='contained' color='primary' style={{marginRight:'2vw'}} onClick={updateUser}>
                   Save
                 </Button>
                 <Button variant='contained' color='secondary' style={{marginRight:'2vw'}} onClick={()=>setOpen(!open)}>
@@ -87,7 +118,7 @@ const HiddenData = (props) => {
             <Button onClick={handleCloseDialog} color="secondary">
               Cancel
             </Button>
-            <Button onClick={handleCloseDialog} color="primary" autoFocus>
+            <Button onClick={deleteUser} color="primary" autoFocus>
               I'm perfectly sure
             </Button>
           </DialogActions>
@@ -164,34 +195,21 @@ const UserPage = () => {
   }
 
   const searchFunction = (text) => {
-    console.log(text)
-    
     setSearch(text);
     if(text !== ""){
       let searchResult = users.filter((item) => {
         let tempName = item.name.toLowerCase().indexOf(text.toLowerCase())
-        if(tempName!==-1)
-         {
-          return item.name.toLowerCase()
-         }
+        if(tempName!==-1) return item.name.toLowerCase()
       });
 
-      if (!searchResult || searchResult.length === 0){
-        setSearchResult([]);
-      }
-      else{
-        setSearchResult(searchResult)
-      }
+      if (!searchResult || searchResult.length === 0) setSearchResult([]);
+      else setSearchResult(searchResult)
     }
 
-    else{
-      setSearchResult([]);
-    }
+    else setSearchResult([]);
   }
 
-  const onChangeSearch = (event) => {
-    searchFunction(event.target.value);
-  }
+  const onChangeSearch = (event) => searchFunction(event.target.value);
 
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, users.length - page * rowsPerPage);
 
