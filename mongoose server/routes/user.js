@@ -222,4 +222,92 @@ router.post('/add', (req,res) => {
     }
 })
 
+router.put('/update', (req,res) => {
+    if(req.body && (req.body.name || req.body.id)){
+        let userId = null;
+        async.waterfall([
+            //get user with name
+            function(getUserCallback){
+                if(req.body.name){
+                    User.findOne({name:req.body.name},(err,data)=>{
+                        if(!err) {
+                            if(!data) getUserCallback('invalid username',null)
+                            else {
+                                userId = data._id;
+                                getUserCallback()
+                            }
+                        }
+                        else getUserCallback(err,null)
+                    })
+                }
+                else{
+                    userId = req.body._id;
+                    getUserCallback();
+                }
+            },
+            //update user
+            function(updateUserCallback){
+                let updateProps = {};
+                if(req.body.firstName) updateProps.firstName = req.body.firstName;
+                if(req.body.lastName) updateProps.lastName = req.body.lastName;
+                User.updateOne({_id:userId},{$set: updateProps},(err)=>{
+                    if(!err) updateUserCallback();
+                    else updateUserCallback(err);
+                })
+            }
+        ], function(err){
+            if(!err) res.json({status:'ok'});
+            else res.json({err:true,message:err.errmsg});
+        })
+        
+    }
+    else{
+        console.log({err:true, message: 'Missing parameter'})
+    }
+    
+})
+
+router.delete('/delete', (req,res) => {
+    if (req.body && (req.body.name || req.body.id)){
+        let userId = null;
+        async.waterfall([
+            //get user with name
+            function(getUserCallback){
+                if(req.body.name){
+                    User.findOne({name:req.body.name},(err,data)=>{
+                        if(!err) {
+                            if(!data) getUserCallback('invalid username',null)
+                            else {
+                                userId = data._id;
+                                getUserCallback()
+                            }
+                        }
+                        else getUserCallback(err,null)
+                    })
+                }
+                else{
+                    userId = req.body._id;
+                    getUserCallback();
+                }
+            },
+            //del user
+            function(deleteUserCallback){
+                User.deleteOne({_id: userId}, (err)=>{
+                    if(!err) deleteUserCallback()
+                    else deleteUserCallback(err,null)
+                })
+            }
+        ], function(err){
+            if(!err) res.json({status:'ok'});
+            else res.json({err:true,message:err.errmsg});
+        })
+    
+    }
+    else{
+        console.log({err:true, message: 'Missing parameter'})
+    }
+
+    
+})
+
 module.exports = router;
