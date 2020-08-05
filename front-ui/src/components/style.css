@@ -1,0 +1,42 @@
+@font-face{
+    font-family: 'maxImpact';
+    src: local(Minecraft), url(../fonts/Maximum\ Impact.ttf) format('truetype');
+}
+
+.cardComponent{
+    padding:5vh 5vw;
+    font-family:'maxImpact';
+    font-size:2vw;
+}
+
+.cardComponent:hover{
+    color:gray
+}
+
+.buttonHeader{
+    height:5vh;
+}
+
+.buttonHeader:after {    
+    background: none repeat scroll 0 0 transparent;
+    bottom: 0;
+    content: "";
+    display: block;
+    height: 2px;
+    left: 50%;
+    position: absolute;
+    background: black;
+    transition: width 0.3s ease 0s, left 0.3s ease 0s;
+    width: 0;
+  }
+
+.buttonHeader:hover:after { 
+    width: 100%; 
+    left: 0; 
+}
+
+.buttonHeader:hover{
+    background: transparent;
+}
+
+
