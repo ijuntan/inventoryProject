@@ -1,0 +1,31 @@
+GET http://localhost:8080/organization/list
+
+###
+POST http://localhost:8080/organization/add
+content-type: application/json
+
+{
+    "name": "Harvard",
+    "address": "US",
+    "description": "University"
+}
+
+
+###
+DELETE  http://localhost:8080/organization/delete
+content-type: application/json
+
+{
+    "organizationId":"5eed938ce8b36b16749351be"
+
+}
+
+###
+PUT http://localhost:8080/organization/update
+content-type: application/json
+
+{
+    "organizationId":"5eed9a4bcd1c58222856b481",
+    "name":"Oxford"
+}
+

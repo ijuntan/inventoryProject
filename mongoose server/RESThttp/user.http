@@ -1,0 +1,27 @@
+###
+POST http://localhost:8080/user/add
+content-type: application/json
+
+{
+    "name":"Sixeton",
+    "password":"w666",
+    "email":"666ix666@gmail.com",
+    "firstName":"Six",
+    "lastName":"Eton",
+    "organization":"UniMed"
+}
+
+###
+GET http://localhost:8080/user/list?userId=5ef6d932d8af42137c5b79aa
+
+###
+POST http://localhost:8080/user/login
+content-type: application/json
+
+{
+    "name":"Sixeton",
+    "password":"w666"
+}
+
+###
+GET http://localhost:8080/user/profile

@@ -1,0 +1,23 @@
+###
+POST http://localhost:8080/product/add
+content-type: application/json
+
+{
+    "name":"Rendang ke",
+    "type":"Makanan",
+    "amount":1,
+    "produced":"Indonesia",
+    "costPrice": 10000,
+    "salePrice": 20000,
+    "description":"Makanan yang disukai semua orang"
+}
+
+###
+PUT http://localhost:8080/product/update
+content-type: application/json
+
+{
+    "productId":"5eede8817deeee35b812d08e",
+    
+    "category":"5eedf6550cee4e29e043ff23"
+}

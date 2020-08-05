@@ -1,0 +1,20 @@
+###
+POST http://localhost:8080/category/add
+content-type: application/json
+
+{
+    "name": "Vegetable",
+    "organization":"Harvard",
+    "parentName":"Food"
+}
+
+###
+PUT http://localhost:8080/category/update
+content-type: application/json
+
+{
+    "categoryId":"5eedf6ea0cee4e29e043ff24"
+}
+
+###
+GET http://localhost:8080/category/list/?organization=Harvard
